@@ -177,9 +177,7 @@ const TextLab: React.FC = () => {
                       <motion.div 
                         initial={false}
                         animate={{ 
-                          scale: currentStep === step.id ? 1.2 : 1,
-                          opacity: currentStep === step.id || !currentStep ? 1 : 0.4,
-                          boxShadow: currentStep === step.id ? `0 0 20px ${step.color.replace('bg-', '')}66` : 'none'
+                          boxShadow: currentStep === step.id ? `0 0 20px rgba(59, 130, 246, 0.4)` : 'none'
                         }}
                         className={`w-12 h-12 md:w-16 md:h-16 rounded-2xl ${step.color} flex items-center justify-center shadow-lg transition-all duration-500`}
                       >

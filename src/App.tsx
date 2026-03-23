@@ -112,7 +112,7 @@ const App: React.FC = () => {
                 <button 
                    key={lng}
                    onClick={() => changeLanguage(lng)} 
-                   className={`p-1 px-3 rounded-md transition-colors text-xs font-bold uppercase ${i18n.language === lng ? 'bg-primary-500 text-white' : 'hover:bg-white/10 text-white/40'}`}
+                   className={`p-1 px-3 rounded-md transition-colors text-xs font-bold uppercase ${i18n.language.startsWith(lng) ? 'bg-primary-500 text-white' : 'hover:bg-white/10 text-white/40'}`}
                 >
                   {lng}
                 </button>
