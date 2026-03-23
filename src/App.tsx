@@ -29,6 +29,7 @@ import AudioLab from './labs/AudioLab';
 import VideoLab from './labs/VideoLab';
 import RAGModule from './labs/RAGModule';
 import RLPlayground from './labs/RLPlayground';
+import EcosystemMindMap from './labs/EcosystemMindMap';
 
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -413,6 +414,9 @@ const App: React.FC = () => {
                     </motion.a>
                  </div>
               </div>
+
+              {/* AI Ecosystem Mind Map */}
+              <EcosystemMindMap />
             </motion.div>
           ) : (
             <motion.div 
