@@ -6,10 +6,8 @@ import {
   BrainCircuit, 
   Play, 
   Square,
-  Zap,
   CheckCircle,
-  HelpCircle,
-  Sparkles
+  HelpCircle
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 

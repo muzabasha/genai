@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Sparkles, 
-  Target, 
-  Brush, 
-  Wind, 
-  RefreshCw,
-  Image as ImageIcon,
-  Layers,
-  Camera
+  Sparkles, Target, Brush, Wind, RefreshCw, Image as ImageIcon, Layers, Camera
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
@@ -18,18 +11,26 @@ const ImageLab: React.FC = () => {
   const [noiseLevel, setNoiseLevel] = useState(100);
   const [generatedImg, setGeneratedImg] = useState<string | null>(null);
   const [showEquation, setShowEquation] = useState(false);
+  
+  // Intermediate data
+  const [embedding, setEmbedding] = useState<number[]>([]);
+  const [mse, setMse] = useState(0);
 
   const generateImage = async () => {
     setIsGenerating(true);
     setGeneratedImg(null);
     setNoiseLevel(100);
+    setMse(0);
     
-    // Step 1: CLIP Embedding (Input)
-    await new Promise(r => setTimeout(r, 1000));
+    // Step 1: CLIP Embedding (Input Representation)
+    const newEmbedding = Array.from({ length: 4 }, () => parseFloat((Math.random() * 2 - 1).toFixed(3)));
+    setEmbedding(newEmbedding);
+    await new Promise(r => setTimeout(r, 1200));
     
     // Step 2: Reverse Diffusion Process (Noise to Image)
     for (let i = 100; i >= 0; i -= 10) {
       setNoiseLevel(i);
+      setMse(parseFloat((Math.random() * 0.1).toFixed(4)));
       await new Promise(r => setTimeout(r, 400));
     }
 
@@ -41,81 +42,80 @@ const ImageLab: React.FC = () => {
   return (
     <div className="space-y-8 max-w-5xl mx-auto pb-12">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div className="space-y-2">
+        <div className="space-y-2 text-white">
           <div className="flex items-center gap-2 text-purple-400 font-bold uppercase tracking-widest text-xs">
             <Brush className="w-4 h-4" />
             Visual Lab
           </div>
-          <h2 className="text-4xl font-display font-black text-white">Diffusion Art Studio</h2>
-          <p className="text-white/50 max-w-xl text-sm leading-relaxed">
-             From chaos to clarity. Witness how AI "sculpts" images by reversing noise step-by-step using reverse diffusion.
+          <h2 className="text-4xl font-display font-black">Diffusion Art Studio</h2>
+          <p className="text-white/50 max-w-xl text-sm italic">
+             Witness the "Noise Metamorphosis" — the data changing from static to structured pixels.
           </p>
         </div>
-        <button 
-           onClick={() => setShowEquation(!showEquation)}
-           className="px-4 py-2 glass rounded-xl border-white/5 text-xs font-bold hover:bg-white/10 transition-colors flex items-center gap-2 text-white"
-        >
+        <button onClick={() => setShowEquation(!showEquation)} className="px-4 py-2 glass rounded-xl border-white/5 text-xs font-bold hover:bg-white/10 transition-colors flex items-center gap-2 text-white">
           <Target className="w-4 h-4" />
-          {showEquation ? 'Hide Diffusion Math' : 'Show Math View'}
+          {showEquation ? 'Hide Diffusion Math' : 'Show Diffusion Theory'}
         </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-white">
-        {/* Controls */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="glass rounded-3xl p-6 border-white/5 space-y-6">
-            <div className="flex items-center gap-2 text-white/40 text-sm font-bold uppercase tracking-wider text-white">
+          <div className="glass rounded-[2.5rem] p-8 border-white/5 space-y-6 shadow-2xl">
+            <div className="flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-wider">
               <Sparkles className="w-4 h-4" />
               Creative Prompt
             </div>
             
-            <textarea 
-               value={prompt}
-               onChange={(e) => setPrompt(e.target.value)}
-               placeholder="What should I paint?"
-               className="w-full h-24 bg-white/5 rounded-2xl p-4 border border-white/10 focus:border-purple-500/50 outline-none resize-none transition-all placeholder:text-white/20 text-sm"
-            />
+            <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} className="w-full h-24 bg-white/5 rounded-2xl p-4 border border-white/10 focus:border-purple-500/50 outline-none resize-none transition-all placeholder:text-white/20 text-sm" placeholder="What should I paint?" />
 
-            <button 
-               onClick={generateImage}
-               disabled={isGenerating}
-               className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${isGenerating ? 'bg-white/5 text-white/20' : 'bg-purple-500 hover:shadow-lg hover:shadow-purple-500/20 active:scale-95'}`}
-            >
+            <button onClick={generateImage} disabled={isGenerating} className={`w-full py-4 rounded-3xl font-bold flex items-center justify-center gap-2 transition-all ${isGenerating ? 'bg-white/5 text-white/20' : 'bg-purple-500 hover:shadow-lg hover:shadow-purple-500/20 active:scale-95'}`}>
               {isGenerating ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Camera className="w-5 h-5" />}
-              {isGenerating ? 'Denoising...' : 'Start Sculpting'}
+              {isGenerating ? 'Synthesizing...' : 'Start Sculpting'}
             </button>
           </div>
 
-          <div className="glass rounded-3xl p-6 border-white/5 space-y-4">
-             <div className="flex items-center gap-2 text-white/40 text-sm font-bold uppercase tracking-wider text-white">
+          <div className="glass rounded-[2rem] p-6 border-white/5 space-y-4">
+             <div className="flex items-center gap-2 text-purple-400 text-xs font-bold uppercase">
                 <Wind className="w-4 h-4" />
-                Concept: Denoising
+                Data Step: Denoising
              </div>
-             <p className="text-xs text-white/50 leading-relaxed">
-                Starting with static (noise), the model learns to remove it bit by bit based on your prompt. It's like finding a statue inside a block of marble.
+             <p className="text-xs text-white/50 leading-relaxed italic">
+                In this lab, you don't just see the final image. You see the **CLIP Prompt Vectors** and the **Mean Squared Error (MSE)** score as the AI removes noise.
              </p>
           </div>
         </div>
 
-        {/* Visualizer */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="glass rounded-3xl p-8 border-white/5 min-h-[450px] relative overflow-hidden flex flex-col items-center justify-center gap-8">
-             <div className="absolute inset-0 bg-grid-white/5" />
+           <div className="glass rounded-[3rem] p-8 border-white/5 min-h-[500px] relative overflow-hidden flex flex-col items-center justify-center gap-8">
+             <div className="absolute inset-0 bg-grid-white/5 opacity-50" />
              
-             <div className="relative w-full max-w-sm aspect-square glass rounded-2xl border-white/10 overflow-hidden shadow-2xl">
+             {/* Intermediate Representation: CLIP Vector */}
+             <AnimatePresence>
+                {embedding.length > 0 && noiseLevel > 90 && (
+                   <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute top-8 left-8 p-4 glass rounded-2xl border-purple-500/10 text-center z-30">
+                      <div className="text-[8px] font-bold text-white/40 uppercase mb-2">Intermediate: CLIP Prompt Embedding</div>
+                      <div className="font-mono text-[10px] text-purple-400">[{embedding.join(', ')}]</div>
+                   </motion.div>
+                )}
+             </AnimatePresence>
+
+             {/* Intermediate Representation: MSE Score */}
+             <AnimatePresence>
+                {isGenerating && noiseLevel < 90 && (
+                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }} className="absolute top-8 right-8 p-4 glass rounded-2xl border-purple-500/10 text-center z-30">
+                      <div className="text-[8px] font-bold text-white/40 uppercase mb-2">Intermediate: Denoise Loss (MSE)</div>
+                      <div className="font-mono text-xl text-purple-400">{mse}</div>
+                   </motion.div>
+                )}
+             </AnimatePresence>
+
+             <div className="relative w-full max-w-sm aspect-square glass rounded-[2.5rem] border-white/10 overflow-hidden shadow-[0_0_80px_rgba(168,85,247,0.1)]">
                 <AnimatePresence mode="wait">
                   {isGenerating ? (
-                    <motion.div 
-                      key="noise"
-                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                      className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm"
-                    >
+                    <motion.div key="noise" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
                        <div className="w-full h-full relative overflow-hidden opacity-30">
                           {Array.from({ length: 400 }).map((_, i) => (
-                            <motion.div 
-                               key={i} animate={{ opacity: [0.1, 0.4, 0.1], x: [0, (Math.random()-0.5)*10, 0] }} transition={{ duration: 0.1, repeat: Infinity }}
-                               style={{ position: 'absolute', left: `${Math.random()*100}%`, top: `${Math.random()*100}%`, width: '2px', height: '2px', backgroundColor: 'white' }}
-                            />
+                            <motion.div key={i} animate={{ opacity: [0.1, 0.4, 0.1], x: [0, (Math.random()-0.5)*10, 0] }} transition={{ duration: 0.1, repeat: Infinity }} style={{ position: 'absolute', left: `${Math.random()*100}%`, top: `${Math.random()*100}%`, width: '2px', height: '2px', backgroundColor: 'white' }} />
                           ))}
                        </div>
                        <motion.div className="absolute bottom-8 left-0 right-0 px-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -132,44 +132,41 @@ const ImageLab: React.FC = () => {
                 </AnimatePresence>
 
                 {!isGenerating && generatedImg ? (
-                  <motion.img 
-                    initial={{ scale: 1.1, filter: 'blur(10px) brightness(0.5)' }}
-                    animate={{ scale: 1, filter: 'blur(0px) brightness(1)' }}
-                    transition={{ duration: 1 }}
-                    src={generatedImg} 
-                    className="w-full h-full object-cover" 
-                    alt="Generated" 
-                  />
+                  <motion.img initial={{ scale: 1.1, filter: 'blur(10px) brightness(0.5)' }} animate={{ scale: 1, filter: 'blur(0px) brightness(1)' }} transition={{ duration: 1 }} src={generatedImg} className="w-full h-full object-cover" alt="Generated" />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center p-12 text-center text-white/20">
-                     <ImageIcon className="w-16 h-16 mb-4 opacity-20 text-white" />
-                     <p>Final image will appear here after noise reduction.</p>
+                     <ImageIcon className="w-16 h-16 mb-4 opacity-10" />
+                     <p className="text-sm font-medium">Final image will emerge from the noise.</p>
                   </div>
                 )}
+             </div>
+
+             <div className="flex gap-4">
+                {['CLIP', 'Latent', 'UNet', 'VAE'].map((step, i) => (
+                  <div key={step} className="flex flex-col items-center gap-2">
+                    <div className={`w-3 h-3 rounded-full ${noiseLevel <= (100 - i*25) ? 'bg-purple-500 shadow-[0_0_8px_#a855f7]' : 'bg-white/10'}`} />
+                    <span className={`text-[10px] font-bold uppercase ${noiseLevel <= (100 - i*25) ? 'text-white' : 'text-white/20'}`}>{step}</span>
+                  </div>
+                ))}
              </div>
           </div>
 
           <AnimatePresence>
             {showEquation && (
-              <motion.div 
-                 initial={{ opacity: 0, y: 20 }}
-                 animate={{ opacity: 1, y: 0 }}
-                 exit={{ opacity: 0, y: 20 }}
-                 className="p-8 glass rounded-[2rem] border-purple-500/20 space-y-6 relative overflow-hidden"
-              >
-                  <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-purple-500 to-pink-500" />
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} className="p-10 glass rounded-[3rem] border-purple-500/20 space-y-10 relative overflow-hidden text-left bg-black/20">
+                  <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-purple-500 via-pink-500 to-indigo-500 shadow-[0_5px_15px_rgba(168,85,247,0.3)]" />
                   
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
-                      <Layers className="w-5 h-5 text-purple-400" />
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center">
+                      <Layers className="w-6 h-6 text-purple-400" />
                     </div>
                     <div>
-                       <h3 className="font-bold text-white">The Forward & Reverse Noising Process</h3>
-                       <p className="text-xs text-white/40">The diffusion probabilistic foundation (DDPM).</p>
+                       <h3 className="text-xl font-black text-white px-0.5">The Forward & Reverse Noising Process</h3>
+                       <p className="text-sm text-white/40">The diffusion probabilistic foundation (DDPM).</p>
                     </div>
                   </div>
                   
-                  <div className="bg-black/40 p-6 rounded-2xl flex items-center justify-center gap-4 font-mono text-lg md:text-3xl border border-white/5 flex-wrap text-white">
+                  <div className="bg-black/60 p-8 rounded-3xl flex items-center justify-center gap-6 font-mono text-xl md:text-4xl border border-white/10 flex-wrap text-white shadow-inner">
                      <span className="text-purple-400">x<sub>t</sub></span>
                      <span className="text-white/30">=</span>
                      <span className="text-white">√α<sub>t</sub> x<sub>0</sub></span>
@@ -178,36 +175,36 @@ const ImageLab: React.FC = () => {
                      <span className="text-purple-500 animate-pulse">ε</span>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
-                    <div className="space-y-4">
-                      <h4 className="text-sm font-bold text-purple-400 uppercase tracking-tight">Equation Interpretation</h4>
-                      <ul className="space-y-3 text-xs text-white/60">
-                        <li className="flex gap-2">
-                          <span className="text-white font-bold">x<sub>0</sub>:</span> 
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-4">
+                    <div className="space-y-6">
+                      <h4 className="text-sm font-black text-purple-400 uppercase tracking-[0.2em]">The Mathematical Logic</h4>
+                      <ul className="space-y-5 text-sm text-white/60">
+                        <li className="flex gap-4">
+                          <span className="text-purple-400 font-bold">x<sub>0</sub> :</span> 
                           <span>The original, sharp image (the ground truth).</span>
                         </li>
-                        <li className="flex gap-2">
-                          <span className="text-white font-bold">α<sub>t</sub>:</span> 
-                          <span>The variance schedule at step <i>t</i>, determining signal-to-noise ratio.</span>
+                        <li className="flex gap-4">
+                          <span className="text-purple-400 font-bold">α<sub>t</sub> :</span> 
+                          <span>The variance schedule at step t, determining the signal-to-noise ratio.</span>
                         </li>
-                        <li className="flex gap-2">
-                          <span className="text-white font-bold">ε:</span> 
+                        <li className="flex gap-4">
+                          <span className="text-purple-400 font-bold">ε :</span> 
                           <span>Pure Gaussian noise that is modeled and then subtracted during recovery.</span>
                         </li>
                       </ul>
                     </div>
                     
-                    <div className="space-y-4 border-l border-white/5 pl-8">
-                       <h4 className="text-sm font-bold text-purple-500 uppercase tracking-tight">Illustration: The Ice Sculpture</h4>
-                       <p className="text-xs text-white/50 leading-relaxed text-left">
-                         Imagine an artist with a block of ice. At the start, it's just a rough shape without details. At every step, the artist chips away a tiny, specific bit of noise until the swan (the final image) is finally visible.
+                    <div className="space-y-6 border-l border-white/5 pl-10">
+                       <h4 className="text-sm font-black text-purple-500 uppercase tracking-[0.2em]">The Ice Sculpture Illustration</h4>
+                       <p className="text-sm text-white/50 leading-relaxed italic">
+                         "Imagine an artist with a block of ice. At the start, it's just a rough shape without details. At every step, the artist chips away a tiny, specific bit of noise until the swan is finally visible."
                        </p>
                     </div>
                   </div>
 
-                  <div className="mt-8 p-6 bg-purple-500/5 rounded-2xl border border-purple-500/10">
-                    <h4 className="text-xs font-black text-purple-400 uppercase tracking-[0.2em] mb-3">Open-Ended Research Question</h4>
-                    <p className="text-sm italic text-white/80 leading-relaxed text-left">
+                  <div className="p-8 bg-purple-500/[0.03] rounded-3xl border border-purple-500/10 transition-all hover:bg-purple-500/[0.05]">
+                    <h4 className="text-xs font-black text-purple-400 uppercase tracking-[0.2em] mb-4">Open Research Question</h4>
+                    <p className="text-md italic text-white/80 leading-relaxed text-left">
                       "If a diffusion model learns by reversing noise found in real paintings, does it possess actual artistic intent, or is it just calculating the 'least noisy' path to a human-like image?"
                     </p>
                   </div>
