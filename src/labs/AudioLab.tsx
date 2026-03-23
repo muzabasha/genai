@@ -21,7 +21,6 @@ const AudioLab: React.FC = () => {
     setIsGenerating(true);
     setProgress(0);
     
-    const steps = ['Phonemes', 'Spectrogram', 'Waveform Synthesis', 'Neural Vocoder'];
     for (let i = 0; i <= 100; i += 5) {
       setProgress(i);
       await new Promise(r => setTimeout(r, 150));
