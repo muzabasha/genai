@@ -316,7 +316,7 @@ const App: React.FC = () => {
                        Powered by NotebookLM
                     </div>
                  </div>
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                     <motion.a 
                        href="https://notebooklm.google.com/notebook/339c9ebf-6094-4bc5-993c-fc3fcdf0a58f?artifactId=1c3819ba-6c52-4b6e-b482-79728dbe6698"
                        target="_blank"
@@ -410,6 +410,30 @@ const App: React.FC = () => {
                       </div>
                       <div className="relative text-[10px] font-black uppercase tracking-widest text-emerald-400 flex items-center gap-2 mt-6">
                          Review <ExternalLink className="w-3 h-3" />
+                      </div>
+                    </motion.a>
+
+                    <motion.a 
+                       href="https://notebooklm.google.com/notebook/339c9ebf-6094-4bc5-993c-fc3fcdf0a58f?artifactId=fbdf480a-eb9a-46b6-9cbf-08bb49f40f3f"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       initial={{ opacity: 0, y: 20 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       whileHover={{ scale: 1.02, y: -5 }}
+                       className="p-8 rounded-[2rem] glass border-teal-500/20 relative group overflow-hidden text-left bg-teal-500/5 hover:bg-teal-500/10 transition-all shadow-2xl flex flex-col justify-between"
+                    >
+                      <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-teal-500/20 to-blue-600/20 blur-[80px]" />
+                      <div className="relative space-y-6">
+                         <div className="w-16 h-16 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                           <Globe className="w-7 h-7 text-teal-400 font-bold" />
+                         </div>
+                         <div>
+                            <h3 className="text-xl font-display font-bold text-white leading-tight">Kannada Video</h3>
+                            <p className="text-white/40 text-[11px] mt-2 leading-relaxed text-left">ಜನರೇಟಿವ್ ಎಐನ ಸಮಗ್ರ ದೃಶ್ಯ ನಡಿಗೆ-ಥ್ರೂ.</p>
+                         </div>
+                      </div>
+                      <div className="relative text-[10px] font-black uppercase tracking-widest text-teal-400 flex items-center gap-2 mt-6">
+                         ವೀಕ್ಷಿಸಿ <ExternalLink className="w-3 h-3" />
                       </div>
                     </motion.a>
                  </div>
