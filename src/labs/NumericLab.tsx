@@ -70,21 +70,21 @@ const NumericLab: React.FC = () => {
             <Activity className="w-4 h-4" />
             Numeric Lab
           </div>
-          <h2 className="text-4xl font-display font-black">Synthetic Data Factory</h2>
-          <p className="text-white/50 max-w-xl">
+          <h2 className="text-4xl font-display font-black text-white">Synthetic Data Factory</h2>
+          <p className="text-white/50 max-w-xl text-sm">
             How do AI models create new numbers? Learn about VAEs and how they map patterns to a "Hidden Space".
           </p>
         </div>
         <button 
            onClick={() => setShowEquation(!showEquation)}
-           className="px-4 py-2 glass rounded-xl border-white/5 text-xs font-bold hover:bg-white/10 transition-colors flex items-center gap-2"
+           className="px-4 py-2 glass rounded-xl border-white/5 text-xs font-bold hover:bg-white/10 transition-colors flex items-center gap-2 text-white"
         >
           <Target className="w-4 h-4" />
           {showEquation ? 'Hide VAE Equation' : 'Show Math View'}
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-white">
         {/* Controls */}
         <div className="lg:col-span-1 space-y-6">
           <div className="glass rounded-3xl p-6 border-white/5 space-y-6">
@@ -115,7 +115,7 @@ const NumericLab: React.FC = () => {
             <button 
                onClick={generateData}
                disabled={isGenerating}
-               className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${isGenerating ? 'bg-white/5 text-white/20' : 'bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95'}`}
+               className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${isGenerating ? 'bg-white/5 text-white/20' : 'bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95 text-white'}`}
             >
               {isGenerating ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Zap className="w-5 h-5" />}
               {isGenerating ? 'Sampling...' : 'Generate New Points'}
@@ -182,19 +182,21 @@ const NumericLab: React.FC = () => {
                  initial={{ opacity: 0, y: 20 }}
                  animate={{ opacity: 1, y: 0 }}
                  exit={{ opacity: 0, y: 20 }}
-                 className="p-8 glass rounded-3xl border-emerald-500/20 space-y-6"
+                 className="p-8 glass rounded-[2rem] border-emerald-500/20 space-y-6 relative overflow-hidden"
               >
+                  <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-emerald-500 to-teal-500" />
+                  
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
                       <Layers className="w-5 h-5 text-emerald-400" />
                     </div>
                     <div>
-                       <h3 className="font-bold">Sampling the Reparameterization Trick</h3>
+                       <h3 className="font-bold text-white">Sampling the Reparameterization Trick</h3>
                        <p className="text-xs text-white/40">How model remains differentiable while sampling.</p>
                     </div>
                   </div>
                   
-                  <div className="bg-black/40 p-6 rounded-2xl flex items-center justify-center gap-8 font-mono text-xl border border-white/5">
+                  <div className="bg-black/40 p-6 rounded-2xl flex items-center justify-center gap-8 font-mono text-xl md:text-3xl border border-white/5 text-white">
                      <span className="text-emerald-400">z</span>
                      <span className="text-white/30">=</span>
                      <span className="text-white">μ</span>
@@ -203,24 +205,39 @@ const NumericLab: React.FC = () => {
                      <span className="text-white/30">⊙</span>
                      <span className="text-emerald-500 animate-pulse">ε</span>
                   </div>
-                  
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div className="space-y-1">
-                      <div className="text-xs font-bold text-white/50">z</div>
-                      <div className="text-[10px] text-white/30">Sampled Latent Vector</div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+                    <div className="space-y-4">
+                      <h4 className="text-sm font-bold text-emerald-400 uppercase tracking-tight">Equation Interpretation</h4>
+                      <ul className="space-y-3 text-xs text-white/60">
+                        <li className="flex gap-2">
+                          <span className="text-white font-bold">μ (Mu):</span> 
+                          <span>The center point (mean) of what the AI knows about a category (like "Human Heartbeat").</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-white font-bold">σ (Sigma):</span> 
+                          <span>The standard deviation, describing how much "variety" is allowed in the data.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-white font-bold">ε (Epsilon):</span> 
+                          <span>The random "spark" injected to ensure every generation is slightly different.</span>
+                        </li>
+                      </ul>
                     </div>
-                    <div className="space-y-1">
-                      <div className="text-xs font-bold text-white/50">μ</div>
-                      <div className="text-[10px] text-white/30">Latent Mean</div>
+                    
+                    <div className="space-y-4 border-l border-white/5 pl-8">
+                       <h4 className="text-sm font-bold text-emerald-500 uppercase tracking-tight">Illustration: Health Signal Gen</h4>
+                       <p className="text-xs text-white/50 leading-relaxed text-left">
+                         If you want to generate health records, the AI knows the average heart rate (μ). To make it look "real" and not always 70BPM, it adds a tiny bit of random noise (ε) scaled by variety (σ). This creates a new, synthetic heart rate that's never existed before.
+                       </p>
                     </div>
-                    <div className="space-y-1">
-                      <div className="text-xs font-bold text-white/50">σ</div>
-                      <div className="text-[10px] text-white/30">Standard Deviation</div>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="text-xs font-bold text-emerald-400">ε</div>
-                      <div className="text-[10px] text-white/30">Random Noise N(0,1)</div>
-                    </div>
+                  </div>
+
+                  <div className="mt-8 p-6 bg-emerald-500/5 rounded-2xl border border-emerald-500/10">
+                    <h4 className="text-xs font-black text-emerald-400 uppercase tracking-[0.2em] mb-3">Open-Ended Research Question</h4>
+                    <p className="text-sm italic text-white/80 leading-relaxed text-left">
+                      "If we can generate infinite synthetic data that looks real, how can we ensure the AI isn't accidentally memorizing and leaking the private patterns of the original people in the dataset?"
+                    </p>
                   </div>
               </motion.div>
             )}

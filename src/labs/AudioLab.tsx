@@ -20,12 +20,10 @@ const AudioLab: React.FC = () => {
   const generateAudio = async () => {
     setIsGenerating(true);
     setProgress(0);
-    
     for (let i = 0; i <= 100; i += 5) {
       setProgress(i);
       await new Promise(r => setTimeout(r, 150));
     }
-
     setIsGenerating(false);
     toast.success("Speech Synthesis Complete!");
   };
@@ -38,31 +36,31 @@ const AudioLab: React.FC = () => {
             <Volume2 className="w-4 h-4" />
             Audio Lab
           </div>
-          <h2 className="text-4xl font-display font-black">Neural Voice Architect</h2>
-          <p className="text-white/50 max-w-xl">
+          <h2 className="text-4xl font-display font-black text-white">Neural Voice Architect</h2>
+          <p className="text-white/50 max-w-xl text-sm leading-relaxed">
              From text to natural speech. Explore how WaveNet-style models generate audio samples at 24,000 times per second.
           </p>
         </div>
         <button 
            onClick={() => setShowConcepts(!showConcepts)}
-           className="px-4 py-2 glass rounded-xl border-white/5 text-xs font-bold hover:bg-white/10 transition-colors flex items-center gap-2"
+           className="px-4 py-2 glass rounded-xl border-white/5 text-xs font-bold hover:bg-white/10 transition-colors flex items-center gap-2 text-white"
         >
           <Settings className="w-4 h-4" />
-          {showConcepts ? 'Hide Architecture' : 'Show Concepts'}
+          {showConcepts ? 'Hide Voice Math' : 'Show Math View'}
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-white">
         {/* Controls */}
         <div className="lg:col-span-1 space-y-6">
           <div className="glass rounded-3xl p-6 border-white/5 space-y-6">
-            <div className="flex items-center gap-2 text-white/40 text-sm font-bold uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-wider">
               <Music className="w-4 h-4" />
               Input Text
             </div>
             
             <textarea 
-               placeholder="Type something for the AI to speak..."
+               placeholder="Type something..."
                className="w-full h-24 bg-white/5 rounded-2xl p-4 border border-white/10 focus:border-orange-500/50 outline-none resize-none transition-all placeholder:text-white/20 text-sm"
                defaultValue="Hello, I am a generative voice model built with neural networks."
             />
@@ -70,7 +68,7 @@ const AudioLab: React.FC = () => {
             <button 
                onClick={generateAudio}
                disabled={isGenerating}
-               className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${isGenerating ? 'bg-white/5 text-white/20' : 'bg-orange-500 hover:shadow-lg hover:shadow-orange-500/20 active:scale-95'}`}
+               className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${isGenerating ? 'bg-white/5 text-white/20' : 'bg-orange-500 hover:shadow-lg hover:shadow-orange-500/20 active:scale-95 text-white'}`}
             >
               {isGenerating ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5" />}
               {isGenerating ? 'Synthesizing...' : 'Generate Voice'}
@@ -78,12 +76,12 @@ const AudioLab: React.FC = () => {
           </div>
 
           <div className="glass rounded-3xl p-6 border-white/5 space-y-4">
-             <div className="flex items-center gap-2 text-white/40 text-sm font-bold uppercase tracking-wider">
+             <div className="flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-wider">
                 <Waves className="w-4 h-4" />
                 Concept: Sample Generation
              </div>
              <p className="text-xs text-white/50 leading-relaxed">
-                Standard audio is 44.1kHz (44,100 samples/sec). Generative AI predicts each sample based on previous ones, creating high-fidelity, natural sounding speech.
+                Standard audio is 44.1kHz (44,100 samples/sec). Generative AI predicts each vibration based on previous ones, creating high-fidelity, natural sounding speech.
              </p>
           </div>
         </div>
@@ -96,43 +94,27 @@ const AudioLab: React.FC = () => {
              <div className="w-full h-32 flex items-center justify-center gap-1">
                 {Array.from({ length: 40 }).map((_, i) => (
                   <motion.div 
-                    key={i}
-                    animate={isGenerating || isPlaying ? {
-                      height: [
-                        '20%', 
-                        `${20 + Math.random() * 60}%`, 
-                        `${10 + Math.random() * 40}%`, 
-                        '20%'
-                      ]
-                    } : { height: '10%' }}
-                    transition={{ 
-                      duration: 0.5, 
-                      repeat: Infinity, 
-                      delay: i * 0.05,
-                      ease: "easeInOut"
-                    }}
+                    key={i} animate={isGenerating || isPlaying ? { height: ['20%', `${20 + Math.random() * 60}%`, `${10 + Math.random() * 40}%`, '20%'] } : { height: '10%' }}
+                    transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.05, ease: "easeInOut" }}
                     className={`w-2 rounded-full ${isGenerating ? 'bg-orange-500/40' : i*2.5 < progress ? 'bg-orange-500' : 'bg-white/10'}`}
                   />
                 ))}
              </div>
 
              <div className="relative z-10 w-full max-w-md">
-                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-white/40 mb-3">
+                <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-white/40 mb-3">
                    <span>Neural Pipeline Progress</span>
                    <span>{progress}%</span>
                 </div>
                 <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden border border-white/5">
-                   <motion.div 
-                     className="h-full bg-linear-to-r from-orange-600 to-orange-400 shadow-[0_0_15px_#f97316]" 
-                     animate={{ width: `${progress}%` }}
-                   />
+                   <motion.div className="h-full bg-linear-to-r from-orange-600 to-orange-400 shadow-[0_0_15px_#f97316]" animate={{ width: `${progress}%` }} />
                 </div>
              </div>
 
              {!isGenerating && progress === 100 && (
                <button 
                  onClick={() => setIsPlaying(!isPlaying)}
-                 className="px-6 py-3 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all flex items-center gap-3 font-bold text-sm"
+                 className="px-6 py-3 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all flex items-center gap-3 font-bold text-sm text-white"
                >
                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                  {isPlaying ? 'Stop Playback' : 'Play Result'}
@@ -143,30 +125,60 @@ const AudioLab: React.FC = () => {
           <AnimatePresence>
             {showConcepts && (
               <motion.div 
-                 initial={{ opacity: 0, y: 20 }}
-                 animate={{ opacity: 1, y: 0 }}
-                 exit={{ opacity: 0, y: 20 }}
-                 className="p-8 glass rounded-3xl border-orange-500/20 space-y-6"
+                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}
+                 className="p-8 glass rounded-[2rem] border-orange-500/20 space-y-6 relative overflow-hidden"
               >
+                  <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-orange-500 to-red-500" />
+                  
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
-                      <Music className="w-5 h-5 text-orange-400" />
+                    <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-400">
+                      <Waves className="w-5 h-5" />
                     </div>
                     <div>
-                       <h3 className="font-bold">Acoustic Auto-Regression</h3>
-                       <p className="text-xs text-white/40">The probability of the next audio sample.</p>
+                       <h3 className="font-bold text-white">Acoustic Auto-Regression</h3>
+                       <p className="text-xs text-white/40">Calculating the probability of the next vibration.</p>
                     </div>
                   </div>
                   
-                  <div className="bg-black/40 p-6 rounded-2xl flex items-center justify-center gap-4 font-mono text-lg border border-white/5 flex-wrap">
+                  <div className="bg-black/40 p-6 rounded-2xl flex items-center justify-center gap-4 font-mono text-lg md:text-2xl border border-white/5 text-white flex-wrap">
                      <span className="text-orange-400">P(x)</span>
                      <span className="text-white/30">=</span>
-                     <span className="text-white">∏<sub>t=1</sub> P(x<sub>t</sub> | x<sub>1</sub>, ..., x<sub>t-1</sub>)</span>
+                     <span className="text-white">PROD(P(x<sub>t</sub> | x<sub>< t</sub>))</span>
                   </div>
-                  
-                  <p className="text-[10px] text-white/40 text-center leading-relaxed">
-                     This describes how WaveNet builds sound. Every single vibration (sample) in the audio file is chosen by looking at all the vibrations that came before it.
-                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+                    <div className="space-y-4">
+                      <h4 className="text-sm font-bold text-orange-400 uppercase tracking-tight">Equation Interpretation</h4>
+                      <ul className="space-y-3 text-xs text-white/60">
+                        <li className="flex gap-2">
+                          <span className="text-white font-bold">P(x<sub>t</sub>):</span> 
+                          <span>The intensity (vibration) of the speaker at this exact millisecond.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-white font-bold">x<sub>< t</sub>:</span> 
+                          <span>Everything the AI has already "spoken" in the previous milliseconds.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-white font-bold">PROD:</span> 
+                          <span>The chain of probabilities multiplied to ensure the whole 30s audio makes sense.</span>
+                        </li>
+                      </ul>
+                    </div>
+                    
+                    <div className="space-y-4 border-l border-white/5 pl-8">
+                       <h4 className="text-sm font-bold text-orange-500 uppercase tracking-tight">Illustration: The Violinist</h4>
+                       <p className="text-xs text-white/50 leading-relaxed text-left">
+                         Imagine a master violinist. At any given second (t), where they move the bow depends entirely on the note they just played (x<sub>< t</sub>). The AI acts the same, predicting where the "vibration" should go next based on the melody it's already generated.
+                       </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 p-6 bg-orange-500/5 rounded-2xl border border-orange-500/10">
+                    <h4 className="text-xs font-black text-orange-400 uppercase tracking-[0.2em] mb-3">Open-Ended Research Question</h4>
+                    <p className="text-sm italic text-white/80 leading-relaxed text-left">
+                      "If an AI can copy the vibration (x) of a human voice perfectly, how can we distinguish between a real doctor calling you and a high-fidelity synthetic scammer voice?"
+                    </p>
+                  </div>
               </motion.div>
             )}
           </AnimatePresence>
