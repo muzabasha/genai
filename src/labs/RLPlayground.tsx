@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { EquationBlock } from './MathBlock';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   RefreshCw, Play, Pause, Settings2, Trophy, Microscope, Beaker, MessageSquare, BookOpen, BrainCircuit, Database, Layers
@@ -353,11 +355,7 @@ const RLPlayground: React.FC = () => {
                      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/5 pt-10 text-left">
                         <div className="space-y-6 text-left font-black">
                            <div className="text-xs font-black text-rose-400 uppercase tracking-widest text-left font-black">The Policy Gradient Objective</div>
-                           <div className="p-6 bg-black/40 rounded-3xl border border-white/5 text-left font-black">
-                              <div className="text-sm md:text-lg font-mono text-center text-white leading-relaxed text-left font-black">
-                                 J(θ) = E<sub>τ~π</sub> [∑<sub>t</sub> γ<sup>t</sup> R(s<sub>t</sub>, a<sub>t</sub>)]
-                              </div>
-                           </div>
+                           <EquationBlock color="rose" formula="J(\theta) = \mathbb{E}_{\tau \sim \pi}\left[\sum_t \gamma^t R(s_t, a_t)\right]" />
                            <div className="space-y-3 text-left font-black">
                               <div className="flex items-start gap-3 text-left font-black">
                                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_10px_#f43f5e] font-black" />

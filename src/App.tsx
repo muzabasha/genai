@@ -316,7 +316,7 @@ const App: React.FC = () => {
                        Powered by NotebookLM
                     </div>
                  </div>
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 lg:grid-cols-3 gap-6">
                     <motion.a 
                        href="https://notebooklm.google.com/notebook/339c9ebf-6094-4bc5-993c-fc3fcdf0a58f?artifactId=1c3819ba-6c52-4b6e-b482-79728dbe6698"
                        target="_blank"
@@ -337,6 +337,30 @@ const App: React.FC = () => {
                          </div>
                       </div>
                       <div className="relative text-[10px] font-black uppercase tracking-widest text-primary-400 flex items-center gap-2 mt-6">
+                         Start <ExternalLink className="w-3 h-3" />
+                      </div>
+                    </motion.a>
+
+                    <motion.a 
+                       href="https://notebooklm.google.com/notebook/339c9ebf-6094-4bc5-993c-fc3fcdf0a58f?artifactId=4e74997d-0e72-435c-82c4-fa6cddee6c6a"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       initial={{ opacity: 0, y: 20 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       whileHover={{ scale: 1.02, y: -5 }}
+                       className="p-8 rounded-[2rem] glass border-indigo-500/20 relative group overflow-hidden text-left bg-indigo-500/5 hover:bg-indigo-500/10 transition-all shadow-2xl flex flex-col justify-between"
+                    >
+                      <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-indigo-500/20 to-blue-600/20 blur-[80px]" />
+                      <div className="relative space-y-6">
+                         <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                           <Trophy className="w-7 h-7 text-indigo-400 font-bold" />
+                         </div>
+                         <div>
+                            <h3 className="text-xl font-display font-bold text-white leading-tight">Level 2 Quiz</h3>
+                            <p className="text-white/40 text-[11px] mt-2 leading-relaxed text-left">Advanced GenAI Evaluation via NotebookLM.</p>
+                         </div>
+                      </div>
+                      <div className="relative text-[10px] font-black uppercase tracking-widest text-indigo-400 flex items-center gap-2 mt-6">
                          Start <ExternalLink className="w-3 h-3" />
                       </div>
                     </motion.a>

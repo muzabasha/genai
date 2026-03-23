@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { EquationBlock } from './MathBlock';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Zap, Layers, Database, BrainCircuit, Type, MapPin, Sparkles, RefreshCw, Quote,
@@ -457,12 +459,7 @@ const TextLab: React.FC = () => {
                      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/5 pt-10">
                         <div className="space-y-6">
                            <div className="text-xs font-black text-indigo-400 uppercase tracking-widest text-left">The Data Flow Equation</div>
-                           <div className="p-6 bg-black/40 rounded-3xl border border-white/5">
-                              <div className="text-sm md:text-lg font-mono text-center text-white leading-relaxed">
-                                 H<sub>l+1</sub> = Norm(x + MHA(x)) <br/>
-                                 x<sub>out</sub> = Norm(H<sub>l+1</sub> + FFN(H<sub>l+1</sub>))
-                              </div>
-                           </div>
+                           <EquationBlock color="indigo" formula="H_{l+1} = \text{Norm}(x + \text{MHA}(x)) \\\\ x_{\text{out}} = \text{Norm}(H_{l+1} + \text{FFN}(H_{l+1}))" />
                            <div className="space-y-3">
                               <div className="flex items-start gap-3">
                                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,1)]" />

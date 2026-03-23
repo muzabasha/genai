@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { EquationBlock } from './MathBlock';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Layers, RefreshCw, Zap, Activity, Settings2, Trophy, Microscope, Beaker, MessageSquare, BookOpen, BrainCircuit, Database
@@ -409,12 +411,7 @@ const NumericLab: React.FC = () => {
                      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/5 pt-10 text-left">
                         <div className="space-y-6">
                            <div className="text-xs font-black text-emerald-400 uppercase tracking-widest text-left">The Variational ELBO Equation</div>
-                           <div className="p-6 bg-black/40 rounded-3xl border border-white/5">
-                              <div className="text-sm md:text-lg font-mono text-center text-white leading-relaxed">
-                                 L(θ, φ; x) = E<sub>q<sub>φ</sub>(z|x)</sub>[log p<sub>θ</sub>(x|z)] <br/>
-                                 - KL(q<sub>φ</sub>(z|x) || p(z))
-                              </div>
-                           </div>
+                           <EquationBlock color="emerald" formula="\mathcal{L}(\theta,\phi;x) = \mathbb{E}_{q_{\phi}(z|x)}[\log p_{\theta}(x|z)] - \text{KL}(q_{\phi}(z|x) \,\|\, p(z))" />
                            <div className="space-y-3 font-black">
                               <div className="flex items-start gap-3">
                                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981]" />

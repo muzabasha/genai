@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { EquationBlock } from './MathBlock';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Database, Search, Send, FileText, Brain, Layout, Settings2, Trophy, Microscope, Beaker, MessageSquare, BookOpen, BrainCircuit, Layers, RefreshCw
@@ -370,12 +372,7 @@ const RAGModule: React.FC = () => {
                      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/5 pt-10 text-left">
                         <div className="space-y-6 text-left font-black">
                            <div className="text-xs font-black text-blue-400 uppercase tracking-widest text-left">The Grounded Probabilty Flow</div>
-                           <div className="p-6 bg-black/40 rounded-3xl border border-white/5">
-                              <div className="text-sm md:text-lg font-mono text-center text-white leading-relaxed">
-                                 Context = argmax<sub>k</sub> cos(e(q), e(d<sub>k</sub>)) <br/>
-                                 Answer = f<sub>LLM</sub> (Query + Context)
-                              </div>
-                           </div>
+                           <EquationBlock color="blue" formula="\text{Context} = \underset{k}{\arg\max}\; \cos(e(q),\, e(d_k)) \\\\ \text{Answer} = f_{\text{LLM}}(\text{Query} + \text{Context})" />
                            <div className="space-y-3 font-black text-left">
                               <div className="flex items-start gap-3">
                                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]" />

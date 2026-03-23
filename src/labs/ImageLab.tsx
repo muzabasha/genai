@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { EquationBlock } from './MathBlock';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   RefreshCw, Image as ImageIcon, Camera, Settings2, Trophy, Microscope, Beaker, MessageSquare, BookOpen, BrainCircuit, Database, Layers
@@ -368,12 +370,7 @@ const ImageLab: React.FC = () => {
                      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/5 pt-10">
                         <div className="space-y-6">
                            <div className="text-xs font-black text-indigo-400 uppercase tracking-widest text-left">The Generative Flow Equation</div>
-                           <div className="p-6 bg-black/40 rounded-3xl border border-white/5">
-                              <div className="text-sm md:text-lg font-mono text-center text-white leading-relaxed">
-                                 z<sub>t-1</sub> = z<sub>t</sub> - ε<sub>θ</sub>(z<sub>t</sub>, t, C) <br/>
-                                 x<sub>final</sub> = VAE_Decode(z<sub>0</sub>)
-                              </div>
-                           </div>
+                           <EquationBlock color="indigo" formula="z_{t-1} = z_t - \varepsilon_{\theta}(z_t,\, t,\, C) \\\\ x_{\text{final}} = \text{VAE\_Decode}(z_0)" />
                            <div className="space-y-3">
                               <div className="flex items-start gap-3">
                                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,1)]" />

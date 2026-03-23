@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { EquationBlock } from './MathBlock';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   RefreshCw, Play, Pause, Activity, Settings2, Trophy, Microscope, Beaker, MessageSquare, BookOpen, BrainCircuit, Database, Layers
@@ -380,12 +382,7 @@ const AudioLab: React.FC = () => {
                      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/5 pt-10 text-left">
                         <div className="space-y-6">
                            <div className="text-xs font-black text-orange-400 uppercase tracking-widest">The Spectral-to-Wave Equation</div>
-                           <div className="p-6 bg-black/40 rounded-3xl border border-white/5">
-                              <div className="text-sm md:text-lg font-mono text-center text-white leading-relaxed">
-                                 H<sub>out</sub> = ResBlock(ConvTranspose(S<sub>mel</sub>)) <br/>
-                                 y = ∑<sub>k</sub> w<sub>k</sub> · f(H<sub>out</sub>, snake<sub>α</sub>)
-                              </div>
-                           </div>
+                           <EquationBlock color="orange" formula="H_{\text{out}} = \text{ResBlock}(\text{ConvT}(S_{\text{mel}})) \\\\ y = \sum_k w_k \cdot f(H_{\text{out}},\, \text{snake}_{\alpha})" />
                            <div className="space-y-3">
                               <div className="flex items-start gap-3">
                                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_10px_#f97316]" />
