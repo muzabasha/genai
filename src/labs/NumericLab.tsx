@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   BarChart3, 
   Cpu, 
   Target, 
   Layers, 
-  Database, 
-  BrainCircuit, 
   RefreshCw,
-  ScatterChart,
-  LineChart,
   Zap,
-  Activity,
-  Waves
+  Activity
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -42,7 +37,7 @@ const NumericLab: React.FC = () => {
     await new Promise(r => setTimeout(r, 1000));
     
     // Step 2: Sampling from z ~ N(mu, sigma)
-    const newLatent = Array.from({ length: 50 }, (_, i) => ({
+    const newLatent = Array.from({ length: 50 }, () => ({
       x: Math.random() * 10 - 5,
       y: Math.random() * 10 - 5,
       z: Math.random() * 10 
@@ -160,7 +155,7 @@ const NumericLab: React.FC = () => {
              <div className="glass rounded-3xl p-6 border-white/5 min-h-[300px] flex flex-col gap-4">
                 <div className="text-xs font-bold text-white/40 uppercase">Generated Output Signal</div>
                 <div className="flex-1">
-                  <ResponsiveContainer width="100%" height="100%">
+                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={data} margin={{ top: 10, right: 0, bottom: 0, left: -20 }}>
                       <defs>
                         <linearGradient id="colorY" x1="0" y1="0" x2="0" y2="1">

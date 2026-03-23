@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
+  BarChart3, 
   BrainCircuit, 
-  Target, 
-  Zap, 
   RefreshCw,
-  Award,
-  TrendingUp,
-  Settings2,
+  Zap,
+  Target,
+  Trophy,
   Play,
-  Pause,
-  ArrowRight
+  Pause
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
-  LineChart, 
+  LineChart as ReLineChart, 
   Line, 
   XAxis, 
   YAxis, 
@@ -26,37 +24,36 @@ import { toast } from 'react-hot-toast';
 const RLPlayground: React.FC = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [iteration, setIteration] = useState(0);
-  const [rewardHistory, setRewardHistory] = useState<{iter: number, reward: number}[]>([]);
-  const [exploration, setExploration] = useState(0.2);
-  const [learningRate, setLearningRate] = useState(0.01);
-  const [discountFactor, setDiscountFactor] = useState(0.9);
+  const [rewardHistory, setRewardHistory] = useState<{ i: number, r: number }[]>([]);
+  const [learningRate, setLearningRate] = useState(0.1);
+  const [epsilon, setEpsilon] = useState(0.5);
+  const [showEquation, setShowEquation] = useState(false);
 
   useEffect(() => {
     let interval: any;
     if (isRunning) {
       interval = setInterval(() => {
         setIteration(prev => prev + 1);
-        const newReward = (Math.log(iteration + 1) * 10) + (Math.random() - exploration) * 5;
-        setRewardHistory(prev => [...prev.slice(-29), { iter: iteration, reward: newReward }]);
-      }, 500);
+        setRewardHistory(prev => {
+          const lastReward = prev.length > 0 ? prev[prev.length - 1].r : 0;
+          const nextReward = Math.min(100, lastReward + (Math.random() * 10 - 2) * (1 - iteration / 200));
+          return [...prev.slice(-49), { i: iteration, r: nextReward }];
+        });
+
+        if (iteration >= 200) {
+          setIsRunning(false);
+          toast.success("Training Loop Converged!");
+        }
+      }, 100);
     }
     return () => clearInterval(interval);
-  }, [isRunning, iteration, exploration]);
+  }, [isRunning, iteration]);
 
-  const toggleTraining = () => {
-    setIsRunning(!isRunning);
-    if (!isRunning) {
-      toast.success("Starting RL Training Loop...", { icon: '🧠' });
-    } else {
-      toast("Training paused.", { icon: '⏸️' });
-    }
-  };
-
-  const reset = () => {
+  const resetTraining = () => {
     setIsRunning(false);
     setIteration(0);
     setRewardHistory([]);
-    toast("Training Reset.");
+    toast.success("Training Buffers Cleared");
   };
 
   return (
@@ -64,156 +61,168 @@ const RLPlayground: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-rose-400 font-bold uppercase tracking-widest text-xs">
-            <BrainCircuit className="w-4 h-4" />
-            Decision Lab
+            <Trophy className="w-4 h-4" />
+            Adaptive Lab
           </div>
-          <h2 className="text-4xl font-display font-black">RL Training Grounds</h2>
+          <h2 className="text-4xl font-display font-black">RL Training Ground</h2>
           <p className="text-white/50 max-w-xl">
-             Teaching AI through trial and error. Adjust the reward loop and watch the model find the optimal path.
+             Be the teacher. Learn how machines learn through trial and error using Reinforcement Learning.
           </p>
         </div>
-        <div className="flex gap-2">
-           <div className="glass px-4 py-2 rounded-xl text-xs font-bold border-white/5 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-emerald-400" />
-              Efficiency: {((rewardHistory[rewardHistory.length-1]?.reward || 0) * 1.5).toFixed(1)}%
-           </div>
-        </div>
+        <button 
+           onClick={() => setShowEquation(!showEquation)}
+           className="px-4 py-2 glass rounded-xl border-white/5 text-xs font-bold hover:bg-white/10 transition-colors flex items-center gap-2"
+        >
+          <Target className="w-4 h-4" />
+          {showEquation ? 'Hide Bellman Math' : 'Show Equation'}
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Controls */}
+        {/* Hyperparameters */}
         <div className="lg:col-span-1 space-y-6">
           <div className="glass rounded-3xl p-6 border-white/5 space-y-6">
             <div className="flex items-center gap-2 text-white/40 text-sm font-bold uppercase tracking-wider">
-              <Settings2 className="w-4 h-4" />
-              Hyperparameters
+              <BrainCircuit className="w-4 h-4" />
+              Agent Configuration
             </div>
             
             <div className="space-y-6">
                <div className="space-y-2">
-                 <div className="flex justify-between text-xs font-bold uppercase tracking-tighter">
-                   <span>Exploration Rate (ε)</span>
-                   <span className="text-rose-400">{exploration.toFixed(2)}</span>
-                 </div>
-                 <input 
-                   type="range" 
-                   min="0.01" 
-                   max="1" 
-                   step="0.01" 
-                   value={exploration}
-                   onChange={(e) => setExploration(parseFloat(e.target.value))}
-                   className="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer accent-rose-500"
-                 />
-                 <p className="text-[10px] text-white/30 italic">High ε = model tries new things. Low ε = model sticks to what it knows.</p>
+                  <div className="flex justify-between text-xs font-bold uppercase tracking-tighter">
+                    <span>Learning Rate (α)</span>
+                    <span className="text-rose-400">{learningRate}</span>
+                  </div>
+                  <input 
+                    type="range" min="0.01" max="1" step="0.05" 
+                    value={learningRate} 
+                    onChange={(e) => setLearningRate(parseFloat(e.target.value))}
+                    className="w-full h-1.5 bg-white/10 rounded-full appearance-none accent-rose-500 cursor-pointer"
+                  />
                </div>
-
                <div className="space-y-2">
-                 <div className="flex justify-between text-xs font-bold uppercase tracking-tighter">
-                   <span>Learning Rate (α)</span>
-                   <span className="text-rose-400">{learningRate.toFixed(3)}</span>
-                 </div>
-                 <input 
-                   type="range" 
-                   min="0.001" 
-                   max="0.1" 
-                   step="0.001" 
-                   value={learningRate}
-                   onChange={(e) => setLearningRate(parseFloat(e.target.value))}
-                   className="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer accent-rose-500"
-                 />
+                  <div className="flex justify-between text-xs font-bold uppercase tracking-tighter">
+                    <span>Exploration (ε)</span>
+                    <span className="text-rose-400">{epsilon}</span>
+                  </div>
+                  <input 
+                    type="range" min="0.1" max="1" step="0.1" 
+                    value={epsilon} 
+                    onChange={(e) => setEpsilon(parseFloat(e.target.value))}
+                    className="w-full h-1.5 bg-white/10 rounded-full appearance-none accent-rose-500 cursor-pointer"
+                  />
                </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-3">
                <button 
-                  onClick={toggleTraining}
-                  className={`flex-1 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${isRunning ? 'bg-rose-500' : 'bg-primary-500 hover:shadow-lg hover:shadow-primary-500/20 active:scale-95'}`}
+                  onClick={() => setIsRunning(!isRunning)}
+                  className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${isRunning ? 'bg-white/10 text-white' : 'bg-rose-500 hover:shadow-lg hover:shadow-rose-500/20 shadow-none active:scale-95'}`}
                >
                  {isRunning ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
                  {isRunning ? 'Pause Training' : 'Start Simulation'}
                </button>
                <button 
-                  onClick={reset}
-                  className="w-14 h-14 rounded-2x glass border-white/10 flex items-center justify-center hover:bg-white/10 transition-all active:scale-95"
+                  onClick={resetTraining}
+                  className="w-full py-4 glass rounded-2xl border-white/5 text-xs text-white/40 font-bold hover:text-white transition-colors"
                >
-                  <RefreshCw className="w-5 h-5 text-white/60" />
+                 Reset Environment
                </button>
             </div>
           </div>
 
           <div className="glass rounded-3xl p-6 border-white/5 space-y-4">
              <div className="flex items-center gap-2 text-white/40 text-sm font-bold uppercase tracking-wider">
-                <Target className="w-4 h-4" />
-                The Bellman Equation
-             </div>
-             <div className="bg-black/40 p-4 rounded-xl font-mono text-[9px] text-rose-400 leading-relaxed border border-white/5">
-                Q(s,a) = Q(s,a) + α[r + γ max Q(s',a') - Q(s,a)]
+                <Zap className="w-4 h-4" />
+                Concept: Policy Improvement
              </div>
              <p className="text-xs text-white/50 leading-relaxed">
-                The model learns to update its "Q-value" (expected reward) for every action. Over thousands of trials, it learns which actions lead to the highest final score.
+                The agent takes actions, receives rewards, and updates its strategy (Policy). With a high learning rate, it forgets old knowledge quickly. With high epsilon, it takes more risks to find better paths.
              </p>
           </div>
         </div>
 
-        {/* Visualizer */}
+        {/* Training Convergence Chart */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="glass rounded-3xl p-8 border-white/5 min-h-[400px] flex flex-col gap-8">
+          <div className="glass rounded-[2rem] p-10 border-white/5 min-h-[450px] relative overflow-hidden flex flex-col gap-8">
              <div className="flex items-center justify-between">
-                <div className="text-xs font-bold text-white/40 uppercase tracking-widest">Training Convergence Chart</div>
-                <div className="flex items-center gap-2">
-                   <div className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
-                   <span className="text-[10px] font-bold text-rose-400">EPOCH {iteration}</span>
+                <div className="text-xs font-bold text-white/40 uppercase tracking-widest flex items-center gap-2">
+                   <BarChart3 className="w-4 h-4" />
+                   Training Convergence: Mean Reward
+                </div>
+                <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-[10px] font-mono">
+                   Step: {iteration} / 200
                 </div>
              </div>
-             
+
              <div className="flex-1 min-h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                   <LineChart data={rewardHistory}>
+                   <ReLineChart data={rewardHistory} margin={{ top: 10, right: 30, left: -20, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                      <XAxis dataKey="iter" hide />
-                      <YAxis stroke="#ffffff20" fontSize={10} domain={['auto', 'auto']} />
+                      <XAxis dataKey="i" hide />
+                      <YAxis domain={[0, 100]} stroke="#ffffff10" fontSize={10} axisLine={false} tickLine={false} />
                       <Tooltip 
-                        contentStyle={{ backgroundColor: '#111827', border: '1px solid #374151', borderRadius: '8px', fontSize: '10px' }} 
+                        contentStyle={{ backgroundColor: '#111827', border: '1px solid #374151', borderRadius: '12px', fontSize: '10px' }}
                         itemStyle={{ color: '#f43f5e' }}
                       />
                       <Line 
                         type="monotone" 
-                        dataKey="reward" 
+                        dataKey="r" 
                         stroke="#f43f5e" 
                         strokeWidth={3} 
                         dot={false} 
-                        animationDuration={300}
+                        animationDuration={100}
+                        isAnimationActive={false}
                       />
-                   </LineChart>
+                   </ReLineChart>
                 </ResponsiveContainer>
              </div>
-
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-2">
-                   <div className="flex items-center gap-2 text-xs font-bold text-white/40 uppercase">
-                      <Zap className="w-3 h-3" />
-                      Current Action
-                   </div>
-                   <div className="flex items-center gap-3">
-                      <span className="px-3 py-1 bg-white/10 rounded-lg text-xs font-mono">Move Left</span>
-                      <ArrowRight className="w-4 h-4 text-white/20" />
-                      <span className="text-xs text-emerald-400">+0.5 Reward</span>
-                   </div>
-                </div>
-                <div className="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-2">
-                   <div className="flex items-center gap-2 text-xs font-bold text-white/40 uppercase">
-                      <Award className="w-3 h-3" />
-                      Policy Quality
-                   </div>
-                   <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                      <motion.div 
-                        className="h-full bg-emerald-500" 
-                        animate={{ width: `${Math.min(iteration / 5, 100)}%` }} 
-                      />
-                   </div>
-                </div>
-             </div>
+             
+             {isRunning && (
+               <div className="flex items-center gap-2 text-[10px] font-bold text-rose-400 uppercase tracking-widest justify-center animate-pulse">
+                  <RefreshCw className="w-3 h-3 animate-spin" />
+                  Stochastic Gradient Descent in Progress...
+               </div>
+             )}
           </div>
+
+          <AnimatePresence>
+            {showEquation && (
+              <motion.div 
+                 initial={{ opacity: 0, y: 20 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 exit={{ opacity: 0, y: 20 }}
+                 className="p-8 glass rounded-3xl border-rose-500/20 space-y-6"
+              >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center">
+                      <Target className="w-5 h-5 text-rose-400" />
+                    </div>
+                    <div>
+                       <h3 className="font-bold">Temporal Difference Learning (Bellman)</h3>
+                       <p className="text-xs text-white/40">Updating the value of an action.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-black/40 p-6 rounded-2xl flex items-center justify-center gap-4 font-mono text-lg border border-white/5 flex-wrap text-center leading-relaxed">
+                     <span className="text-rose-400">Q(s,a)</span>
+                     <span className="text-white/30">←</span>
+                     <span className="text-rose-500">Q(s,a)</span>
+                     <span className="text-white/30">+</span>
+                     <span className="text-rose-400">α</span>
+                     <span className="text-white">[</span>
+                     <span className="text-white">r + </span>
+                     <span className="text-rose-400">γ</span>
+                     <span className="text-white">max Q(s',a') - Q(s,a)</span>
+                     <span className="text-white">]</span>
+                  </div>
+                  
+                  <p className="text-[10px] text-white/40 text-center leading-relaxed max-w-lg mx-auto">
+                     This formula is how the agent learns. It takes the difference between what it expected to happen and what actually happened (the reward) and adjusts its future expectations by the learning rate (α).
+                  </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
