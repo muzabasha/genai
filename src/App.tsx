@@ -315,54 +315,102 @@ const App: React.FC = () => {
                        Powered by NotebookLM
                     </div>
                  </div>
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   <motion.a 
-                      href="https://notebooklm.google.com/notebook/339c9ebf-6094-4bc5-993c-fc3fcdf0a58f?artifactId=1c3819ba-6c52-4b6e-b482-79728dbe6698"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      whileHover={{ scale: 1.02, y: -5 }}
-                      className="p-8 rounded-[2.5rem] glass border-primary-500/20 relative group overflow-hidden text-left bg-primary-500/5 hover:bg-primary-500/10 transition-all shadow-2xl shadow-primary-900/10"
-                   >
-                     <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-primary-500/20 to-blue-600/20 blur-[80px]" />
-                     <div className="relative space-y-6">
-                        <div className="w-16 h-16 rounded-3xl bg-primary-500/10 border border-primary-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <Trophy className="w-7 h-7 text-primary-400 font-bold" />
-                        </div>
-                        <div>
-                           <h3 className="text-2xl font-display font-bold text-white">Mastery Quiz</h3>
-                           <p className="text-white/40 text-sm mt-2 leading-relaxed">Evaluate your GenAI knowledge through an interactive NotebookLM evaluation session.</p>
-                        </div>
-                        <div className="text-xs font-bold text-primary-400 flex items-center gap-2">
-                           Start Assessment <ExternalLink className="w-3 h-3 text-primary-400" />
-                        </div>
-                     </div>
-                   </motion.a>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <motion.a 
+                       href="https://notebooklm.google.com/notebook/339c9ebf-6094-4bc5-993c-fc3fcdf0a58f?artifactId=1c3819ba-6c52-4b6e-b482-79728dbe6698"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       initial={{ opacity: 0, y: 20 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       whileHover={{ scale: 1.02, y: -5 }}
+                       className="p-8 rounded-[2rem] glass border-primary-500/20 relative group overflow-hidden text-left bg-primary-500/5 hover:bg-primary-500/10 transition-all shadow-2xl flex flex-col justify-between"
+                    >
+                      <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-primary-500/20 to-blue-600/20 blur-[80px]" />
+                      <div className="relative space-y-6">
+                         <div className="w-16 h-16 rounded-2xl bg-primary-500/10 border border-primary-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                           <Trophy className="w-7 h-7 text-primary-400 font-bold" />
+                         </div>
+                         <div>
+                            <h3 className="text-xl font-display font-bold text-white leading-tight">Mastery Quiz</h3>
+                            <p className="text-white/40 text-[11px] mt-2 leading-relaxed text-left">Evaluate your GenAI knowledge via NotebookLM.</p>
+                         </div>
+                      </div>
+                      <div className="relative text-[10px] font-black uppercase tracking-widest text-primary-400 flex items-center gap-2 mt-6">
+                         Start <ExternalLink className="w-3 h-3" />
+                      </div>
+                    </motion.a>
 
-                   <motion.a 
-                      href="https://notebooklm.google.com/notebook/339c9ebf-6094-4bc5-993c-fc3fcdf0a58f?artifactId=a83b1bac-cae7-41be-854b-199467076444"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      whileHover={{ scale: 1.02, y: -5 }}
-                      className="p-8 rounded-[2.5rem] glass border-secondary-500/20 relative group overflow-hidden text-left bg-secondary-500/5 hover:bg-secondary-500/10 transition-all shadow-2xl shadow-secondary-900/10"
-                   >
-                     <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-secondary-500/20 to-purple-600/20 blur-[80px]" />
-                     <div className="relative space-y-6">
-                        <div className="w-16 h-16 rounded-3xl bg-secondary-500/10 border border-secondary-500/20 flex items-center justify-center group-hover:rotate-6 transition-transform">
-                          <Video className="w-7 h-7 text-secondary-400 font-bold" />
-                        </div>
-                        <div>
-                           <h3 className="text-2xl font-display font-bold text-white">Watch Deep-Dive Video</h3>
-                           <p className="text-white/40 text-sm mt-2 leading-relaxed">Comprehensive visual walk-through of Generative AI architectures and training paradigms.</p>
-                        </div>
-                        <div className="text-xs font-bold text-secondary-400 flex items-center gap-2">
-                           Watch Lesson <ExternalLink className="w-3 h-3 text-secondary-400 font-bold" />
-                        </div>
-                     </div>
-                   </motion.a>
+                    <motion.a 
+                       href="https://notebooklm.google.com/notebook/339c9ebf-6094-4bc5-993c-fc3fcdf0a58f?artifactId=a83b1bac-cae7-41be-854b-199467076444"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       initial={{ opacity: 0, y: 20 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       whileHover={{ scale: 1.02, y: -5 }}
+                       className="p-8 rounded-[2rem] glass border-secondary-500/20 relative group overflow-hidden text-left bg-secondary-500/5 hover:bg-secondary-500/10 transition-all shadow-2xl flex flex-col justify-between"
+                    >
+                      <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-secondary-500/20 to-purple-600/20 blur-[80px]" />
+                      <div className="relative space-y-6">
+                         <div className="w-16 h-16 rounded-2xl bg-secondary-500/10 border border-secondary-500/20 flex items-center justify-center group-hover:rotate-6 transition-transform">
+                           <Video className="w-7 h-7 text-secondary-400 font-bold" />
+                         </div>
+                         <div>
+                            <h3 className="text-xl font-display font-bold text-white leading-tight">English Video</h3>
+                            <p className="text-white/40 text-[11px] mt-2 leading-relaxed text-left">Visual walk-through of GenAI architectures.</p>
+                         </div>
+                      </div>
+                      <div className="relative text-[10px] font-black uppercase tracking-widest text-secondary-400 flex items-center gap-2 mt-6">
+                         Watch <ExternalLink className="w-3 h-3" />
+                      </div>
+                    </motion.a>
+
+                    <motion.a 
+                       href="https://notebooklm.google.com/notebook/339c9ebf-6094-4bc5-993c-fc3fcdf0a58f?artifactId=9215e93d-602d-402d-9cc2-d6ae4a8db570"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       initial={{ opacity: 0, y: 20 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       whileHover={{ scale: 1.02, y: -5 }}
+                       className="p-8 rounded-[2rem] glass border-orange-500/20 relative group overflow-hidden text-left bg-orange-500/5 hover:bg-orange-500/10 transition-all shadow-2xl flex flex-col justify-between"
+                    >
+                      <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-orange-500/20 to-red-600/20 blur-[80px]" />
+                      <div className="relative space-y-6">
+                         <div className="w-16 h-16 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center group-hover:-rotate-6 transition-transform">
+                           <Globe className="w-7 h-7 text-orange-400 font-bold" />
+                         </div>
+                         <div>
+                            <h3 className="text-xl font-display font-bold text-white leading-tight">Hindi Video</h3>
+                            <p className="text-white/40 text-[11px] mt-2 leading-relaxed text-left">हिंदी में जेनरेटिव एआई का वॉक-थ्रू।</p>
+                         </div>
+                      </div>
+                      <div className="relative text-[10px] font-black uppercase tracking-widest text-orange-400 flex items-center gap-2 mt-6">
+                         देखें <ExternalLink className="w-3 h-3" />
+                      </div>
+                    </motion.a>
+
+                    <motion.a 
+                       href="https://notebooklm.google.com/notebook/339c9ebf-6094-4bc5-993c-fc3fcdf0a58f?artifactId=ec5b82bb-a668-4a90-8bea-8fe6cbac50b9"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       initial={{ opacity: 0, y: 20 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       whileHover={{ scale: 1.02, y: -5 }}
+                       className="p-8 rounded-[2rem] glass border-emerald-500/20 relative group overflow-hidden text-left bg-emerald-500/5 hover:bg-emerald-500/10 transition-all shadow-2xl flex flex-col justify-between"
+                    >
+                      <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 blur-[80px]" />
+                      <div className="relative space-y-6">
+                         <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                           <Sparkles className="w-7 h-7 text-emerald-400 font-bold" />
+                         </div>
+                         <div>
+                            <h3 className="text-xl font-display font-bold text-white leading-tight">Flash Cards</h3>
+                            <p className="text-white/40 text-[11px] mt-2 leading-relaxed text-left">Terminology & Quick Revision.</p>
+                         </div>
+                      </div>
+                      <div className="relative text-[10px] font-black uppercase tracking-widest text-emerald-400 flex items-center gap-2 mt-6">
+                         Review <ExternalLink className="w-3 h-3" />
+                      </div>
+                    </motion.a>
                  </div>
               </div>
             </motion.div>
